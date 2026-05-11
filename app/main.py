@@ -12,7 +12,7 @@ from sqlmodel import select
 
 
 @asynccontextmanager
-async def lifespan_handeler(app=FastAPI):
+async def lifespan_handeler(app:FastAPI):
     create_db_tables()
     yield
     
