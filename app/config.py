@@ -11,7 +11,7 @@ class urlsettings(BaseSettings):
     )
 
     def POSTGRESQL_URL(self):
-        return f"{self.POSTGRES_URL}"
+        return f"{self.DATABASE_URL}"
     
 
 
