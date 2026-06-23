@@ -6,10 +6,11 @@ class urlsettings(BaseSettings):
     POSTGRES_USER : str
     POSTGRES_PASSWORD : str
     POSTGRES_DB :str 
+    BASE_URL : str
     
     model_config= SettingsConfigDict(
-        env_file="./env",
-        env_ignore = True,
+        env_file=".env",
+        env_ignore_empty = True,
         extra= "ignore"
     )
 

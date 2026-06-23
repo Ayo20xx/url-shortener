@@ -1,5 +1,4 @@
-from datetime import timedelta, timezone
-import datetime
+from datetime import datetime, timezone, timedelta
 from typing import Any
 
 from fastapi import APIRouter, HTTPException,status
@@ -8,8 +7,9 @@ from sqlmodel import select
 
 from app.database.model import URL
 from app.database.session import SessionDep
-from app.main import generate_code
+from app.utils import generate_code
 from app.schemas import Url
+from app.config  import settings
 
 
 
@@ -24,27 +24,27 @@ async def short_link(url: Url,session:SessionDep)->dict[str,Any] :
    result=(await session.exec(statement)).first()
 
    if result :
-       return {"shortened_url": f"http://localhost:8000/{result.short_code}"}
+       return {"shortened_url": f"http://{settings.BASE_URL}/{result.short_code}"}
     
    url_shortener=URL(url=url_str,
         short_code= generate_code()
     )
-   await session.add(url_shortener)
-   session.commit()
+   session.add(url_shortener)
+   await session.commit()
    await session.refresh(url_shortener)
-   return {"shortened_url": f"http://localhost:8000/{url_shortener.short_code}"}
+   return {"shortened_url": f"http://{settings.BASE_URL}/{url_shortener.short_code}"}
 
 
 
 @router.get("/{short_code}")
 async def redirect_to_url(short_code:str,session:SessionDep):
     statement= select(URL) .where(URL.short_code== short_code)
-    result=session.exec(statement).first()
+    result=(await session.exec(statement)).first()
 
     if result is None :
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="URL not found")
     
-    if datetime.now(timezone.utc) - result.created_at > timedelta(days=30):
+    if datetime.now(timezone.utc) - result.created_at.replace(tzinfo=timezone.utc) > timedelta(days=30):
         raise HTTPException(status_code= status.HTTP_404_NOT_FOUND, details=" expired code")
     
     result.click_count += 1

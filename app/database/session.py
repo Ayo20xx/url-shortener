@@ -1,8 +1,9 @@
 from sqlmodel import Session,SQLModel
 from fastapi  import Depends
-from sqlalchemy.ext.asyncio import create_async_engine,async_sessionmaker,AsyncSession
+from sqlalchemy.ext.asyncio import create_async_engine,async_sessionmaker
+from sqlmodel.ext.asyncio.session import AsyncSession
 from typing import Annotated
-from config import settings
+from app.config import settings
 engine=create_async_engine(
         url=settings.POSTGRES_URL(),
         echo= True,

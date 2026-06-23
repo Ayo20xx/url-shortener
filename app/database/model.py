@@ -1,6 +1,6 @@
 from datetime import datetime, timezone
 
-from sqlmodel import Field,SQLModel,AutoString
+from sqlmodel import Column, DateTime, Field,SQLModel,AutoString
 from pydantic import AnyHttpUrl
 
 
@@ -9,7 +9,10 @@ class URL(SQLModel,table=True):
     url : AnyHttpUrl = Field(unique=True, sa_type=AutoString) 
     short_code : str 
     click_count: int = Field(default=0)
-    created_at: datetime = Field(default_factory=lambda:datetime.now(timezone.utc))
+    created_at: datetime = Field(
+    default_factory=lambda: datetime.now(timezone.utc),
+    sa_column=Column(DateTime(timezone=True))
+)
 
     
 
