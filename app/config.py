@@ -1,11 +1,7 @@
 from pydantic_settings import BaseSettings,SettingsConfigDict
 
 class urlsettings(BaseSettings):
-    POSTGRES_SERVER : str
-    POSTGRES_PORT : int
-    POSTGRES_USER : str
-    POSTGRES_PASSWORD : str
-    POSTGRES_DB :str 
+    POSTGRES_URL :str
     BASE_URL : str
     
     model_config= SettingsConfigDict(
@@ -14,8 +10,8 @@ class urlsettings(BaseSettings):
         extra= "ignore"
     )
 
-    def POSTGRES_URL(self):
-        return f"postgresql+asyncpg://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@{self.POSTGRES_SERVER}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}"
+    def POSTGRESQL_URL(self):
+        return f"{self.POSTGRES_URL}"
     
 
 
