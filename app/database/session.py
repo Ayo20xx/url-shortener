@@ -5,7 +5,7 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 from typing import Annotated
 from app.config import settings
 engine=create_async_engine(
-        url=settings.POSTGRESQL_URL(),
+        url=settings.DATABASE_URL,
         echo= True,
         )
 

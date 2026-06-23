@@ -10,10 +10,6 @@ class urlsettings(BaseSettings):
         extra= "ignore"
     )
 
-    def POSTGRESQL_URL(self):
-        return f"{self.DATABASE_URL}"
-    
-
-
+ 
 
 settings = urlsettings()
